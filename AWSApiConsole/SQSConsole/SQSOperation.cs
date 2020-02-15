@@ -1,10 +1,9 @@
-﻿
+﻿using System.Collections.Generic;
+using System.Configuration;
+using Amazon.SQS.Model;
 using Amazon.Runtime;
 using Amazon.SQS;
-using Amazon.SQS.Model;
 using System;
-using System.Collections.Generic;
-using System.Configuration;
 
 namespace SQSConsole
 {
@@ -68,6 +67,7 @@ namespace SQSConsole
                 {
                     Console.WriteLine($"Message Content: {item.Body}");
                     Console.WriteLine($"MessageId: {item.MessageId}");
+                    Console.WriteLine($"ReceipHandle: {item.ReceiptHandle}");
                 }
             }
         }
@@ -92,6 +92,67 @@ namespace SQSConsole
                 {
                     Console.WriteLine($"\nID: {item.Id} \nMessageId: {item.MessageId}");
                 }
+            }
+        }
+
+        public void DeleteMessage()
+        {
+            DeleteMessageRequest request = new DeleteMessageRequest
+            {
+                QueueUrl = "https://sqs.us-east-1.amazonaws.com/491483104165/newappqueue",
+                ReceiptHandle = "AQEBX0c2vCstgyAbPoE5sjQEiXlWGfCpZi5ze6SnNQUKjsZMfEix+HM9+DdHcmA7bNvZUsema/fBIrUGDJRIVZQjsgrqLk2KTVBXNJA/Uoe4T4tjAoWwnwhxvcmJR96vkSys9se+fekvg52sTwcxQxkiQ6VNwez5q9BtoRp4LkZFTI+2YaExQDtNX3e07w0MCeffJss2ZJBz3kIo1laZCt7jnNcI02wsyJrZgupm3P0PiwVBsr07lEkzxG1rRAZ5ZAsdeT/YGYsKzGGK4sTD1wjQdw9tfX6rXsmUUFulVBX95QkaOMu/6RgINq3Q9SbKhPHU0sEDyJXg50GZhFZ9gInOd8KuP7JrZrCfQ3UEMn82js6n4hKq3MbHwpWq+vRWI4YnNZ7s4lc7Ipwr5BWhpXBX5w=="
+            };
+
+            var response = client.DeleteMessage(request);
+
+            if (response.HttpStatusCode.IsSuccess())
+            {
+                Console.WriteLine($"Message deleted successfully");
+            }
+        }
+
+        public void PurgeMessages()
+        {
+            PurgeQueueRequest request = new PurgeQueueRequest
+            {
+                QueueUrl = "https://sqs.us-east-1.amazonaws.com/491483104165/newappqueue"
+            };
+
+            var response = client.PurgeQueue(request);
+
+            if (response.HttpStatusCode.IsSuccess())
+            {
+                Console.WriteLine($"Message(s) queued successfully");
+            }
+        }
+
+        public void ListQueues()
+        {
+            ListQueuesRequest request = new ListQueuesRequest { };
+
+            var response = client.ListQueues(request);
+
+            if (response.HttpStatusCode.IsSuccess())
+            {
+                foreach (var item in response.QueueUrls)
+                {
+                    Console.WriteLine($"\nURL: {item}");
+                }
+            }
+        }
+
+        public void DeleteQueues()
+        {
+            DeleteQueueRequest request = new DeleteQueueRequest
+            {
+                QueueUrl = "https://sqs.us-east-1.amazonaws.com/491483104165/newappqueue"
+            };
+
+            var response = client.DeleteQueue(request);
+
+            if (response.HttpStatusCode.IsSuccess())
+            {
+                Console.WriteLine($"\nQueue has been deleted successfully");
             }
         }
     }
