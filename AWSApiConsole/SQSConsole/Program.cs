@@ -10,7 +10,11 @@ namespace SQSConsole
             //sQSOperation.CreateSQSQueue();
             //sQSOperation.SendMessage();
             //sQSOperation.ReceivedMessage();
-            sQSOperation.SendBatchMessages();
+            //sQSOperation.SendBatchMessages();
+            //sQSOperation.DeleteMessage();
+            //sQSOperation.PurgeMessages();
+            //sQSOperation.ListQueues();
+            //sQSOperation.DeleteQueues();
 
             Console.ReadLine();
         }
